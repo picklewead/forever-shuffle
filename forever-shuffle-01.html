@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Forever Shuffle Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style id="app-css">
+:root{
+  --bg:#EDF0EC;--surface:#FFFFFF;--surface-2:#F4F6F3;--ink:#1B211E;--muted:#5A6660;--line:#D3D9D3;
+  --accent:#1F6B5E;--accent-ink:#FFFFFF;--accent-soft:#DCEBE7;
+  --good:#23804A;--bad:#B53A33;--warn:#8F6200;--warn-soft:#F6ECD2;
+  --q-green:#168708;--q-white:#4A524E;
+  --gold:#9C760A;--silver:#66717B;--copper:#9A5226;
+  --shadow:0 1px 2px rgba(20,30,25,.06),0 4px 14px rgba(20,30,25,.05);
+  --display:"Cinzel",Georgia,"Times New Roman",serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F1311;--surface:#171C19;--surface-2:#1D2320;--ink:#E4E9E5;--muted:#95A29B;--line:#2B3430;
+    --accent:#5CC2AE;--accent-ink:#0C1411;--accent-soft:#1C332D;
+    --good:#52C77F;--bad:#EE6E64;--warn:#E3B54E;--warn-soft:#332A14;
+    --q-green:#3FDB27;--q-white:#F2F2F2;
+    --gold:#E5C04A;--silver:#B8C1C9;--copper:#D4864F;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1311;--surface:#171C19;--surface-2:#1D2320;--ink:#E4E9E5;--muted:#95A29B;--line:#2B3430;
+  --accent:#5CC2AE;--accent-ink:#0C1411;--accent-soft:#1C332D;
+  --good:#52C77F;--bad:#EE6E64;--warn:#E3B54E;--warn-soft:#332A14;
+  --q-green:#3FDB27;--q-white:#F2F2F2;
+  --gold:#E5C04A;--silver:#B8C1C9;--copper:#D4864F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,34px);letter-spacing:.02em}
+h2{font-size:18px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.num,input.money,input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+.top p{margin:4px 0 0;color:var(--muted);max-width:60ch}
+.savebar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.status{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--good);display:inline-block}
+.dot.dirty{background:var(--warn)}.dot.ro{background:var(--silver)}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:6px 12px;font-size:14px;font-weight:600}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.ghost{background:transparent}
+button.danger{color:var(--bad)}
+button.small{padding:3px 9px;font-size:13px}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:14px;max-width:100%}
+textarea{width:100%;min-height:90px;font-family:var(--mono);font-size:12px}
+input.money{width:120px}
+input.qty{width:70px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:18px 0 18px;overflow-x:auto}
+.tabs button{border:none;border-bottom:3px solid transparent;border-radius:0;background:none;color:var(--muted);padding:10px 14px;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.pick{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.pick .name{font-weight:700}
+.g{color:var(--gold)}.s{color:var(--silver)}.c{color:var(--copper)}
+.coin{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.coin i{font-style:normal;font-size:.8em;margin-right:.25em;opacity:.9}
+.coin.pos .sign{color:var(--good)}.coin.neg .sign{color:var(--bad)}
+.na{color:var(--muted);font-style:italic;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:14px;align-items:start}
+.rc{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:12px}
+.rc-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.q-green{color:var(--q-green)}.q-white{color:var(--q-white)}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted);background:var(--surface-2)}
+.chip.warn{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.chip.qg{color:var(--q-green)}
+.cost{text-align:right;display:flex;flex-direction:column;gap:2px}
+.cost .big{font-size:18px}
+.miss{font-size:12px;color:var(--warn)}
+.outs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:8px}
+.out{border:1px solid var(--line);border-radius:9px;padding:8px 10px;display:flex;flex-direction:column;gap:3px;background:var(--surface-2);position:relative}
+.out.best{border-color:var(--accent);background:var(--accent-soft)}
+.out .pnl{font-size:16px}
+.out .sub{font-size:12px;color:var(--muted)}
+.pill{position:absolute;top:-9px;right:8px;background:var(--accent);color:var(--accent-ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px}
+.plan{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+details.edit{border-top:1px solid var(--line);padding-top:8px}
+details.edit summary{cursor:pointer;font-weight:600;color:var(--accent);font-size:14px}
+.sec{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.field{display:flex;flex-direction:column;gap:3px}
+.field .hint{font-size:12px;color:var(--muted)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:9px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.r,th.r{text-align:right}
+.how{font-size:12px;color:var(--muted)}
+.how.make{color:var(--accent)}
+.debtns{display:flex;flex-wrap:wrap;gap:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.stat{background:var(--surface-2);border-radius:8px;padding:6px 9px}
+.stat b{display:block;font-family:var(--mono);font-size:15px}
+.log{display:flex;flex-wrap:wrap;gap:4px;max-height:110px;overflow:auto}
+.log span{font-family:var(--mono);font-size:11px;border-radius:5px;padding:1px 5px;background:var(--surface-2);border:1px solid var(--line)}
+.log span.e{color:var(--accent);border-color:var(--accent)}
+.log span.sh{color:var(--warn)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px}
+.totals .stat b{font-size:18px}
+.confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--bad)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:12px}
+.note{font-size:13px;color:var(--muted);max-width:75ch}
+.verbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:13px}
+.ver{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:2px 10px}
+.gh{color:var(--accent);font-weight:600;text-decoration:none}
+.gh:hover{text-decoration:underline}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:14px;z-index:5}
+@media (max-width:560px){.cost{text-align:left}.savebar{width:100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div id="app"></div>
+<script type="application/json" id="seed">{"rev":3,"savedAt":null,"settings":{"ahCut":5,"deCut":true},"mats":[{"id":"linen","name":"Linen Cloth","price":76,"kind":"ah","make":null,"itemId":"2589"},{"id":"boltLinen","name":"Bolt of Linen Cloth","price":148,"kind":"ah","make":{"from":"linen","qty":2,"yields":1},"itemId":"2996"},{"id":"wool","name":"Wool Cloth","price":250,"kind":"ah","make":null,"itemId":"2592"},{"id":"boltWool","name":"Bolt of Woolen Cloth","price":800,"kind":"ah","make":{"from":"wool","qty":3,"yields":1},"itemId":"2997"},{"id":"fineThread","name":"Fine Thread","price":100,"kind":"vendor","make":null},{"id":"coarseThread","name":"Coarse Thread","price":10,"kind":"vendor","make":null},{"id":"redDye","name":"Red Dye","price":50,"kind":"vendor","make":null},{"id":"cerulean","name":"Cerulean Dye","price":6900,"kind":"ah","make":null,"itemId":"249409"},{"id":"spiderSilk","name":"Spider's Silk","price":1660,"kind":"ah","make":null,"itemId":"3182"},{"id":"simpleWood","name":"Simple Wood","price":38,"kind":"vendor","make":null},{"id":"strangeDust","name":"Strange Dust","price":235,"kind":"ah","make":null,"itemId":"10940"},{"id":"lme","name":"Lesser Magic Essence","price":718,"kind":"ah","make":{"from":"gme","qty":1,"yields":3},"itemId":"10938"},{"id":"gme","name":"Greater Magic Essence","price":0,"kind":"ah","make":{"from":"lme","qty":3,"yields":1},"itemId":"10939"},{"id":"lae","name":"Lesser Astral Essence","price":733,"kind":"ah","make":{"from":"gae","qty":1,"yields":3},"itemId":"10998"},{"id":"sgs","name":"Small Glimmering Shard","price":190,"kind":"ah","make":null,"itemId":"10978"},{"id":"gae","name":"Greater Astral Essence","price":2100,"kind":"ah","make":{"from":"lae","qty":3,"yields":1},"itemId":"11082"},{"id":"thickSilk","name":"Thick Spider's Silk","price":1900,"kind":"ah","make":null,"itemId":"4337"}],"recipes":[{"id":"r1","name":"Handstitched Linen Pants","prof":"Tailoring","skill":"","quality":"green","verify":false,"canDE":true,"notes":"Learned from trainer. Your numbers: 8 Linen (4 bolts) + 2 Fine Thread each. DE log imported from your sheet (35 disenchants).","reagents":[{"mat":"boltLinen","qty":4},{"mat":"fineThread","qty":2}],"vendor":0,"ahSell":1100,"ahBuy":1100,"plan":8,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[0,2,0],[0,1,0],[0,2,0],[0,1,0],[0,1,0],[0,1,0],[0,2,0]]}},{"id":"r4","name":"Red Linen Robe","prof":"Tailoring","skill":"","quality":"green","verify":true,"notes":"Classic pattern (drop): 3 Bolt of Linen, 2 Coarse Thread, 2 Red Dye.","reagents":[{"mat":"boltLinen","qty":3},{"mat":"coarseThread","qty":2},{"mat":"redDye","qty":2}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]},"canDE":true},{"id":"r6","name":"Double-stitched Woolen Shoulders","prof":"Tailoring","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 3 Bolt of Woolen Cloth, 2 Fine Thread. Check which essence it DEs into.","reagents":[{"mat":"boltWool","qty":3},{"mat":"fineThread","qty":2}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]},"canDE":true},{"id":"r7","name":"Lesser Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":false,"notes":"Can't be disenchanted. This is where DE'd essence goes: vendor it or sell it on the AH.","reagents":[{"mat":"simpleWood","qty":1},{"mat":"lme","qty":1}],"vendor":580,"ahSell":700,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]},"canDE":false},{"id":"r8","name":"Greater Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 1 Simple Wood, 1 Greater Magic Essence. Set as not disenchantable like the Lesser wand, check in game.","reagents":[{"mat":"simpleWood","qty":1},{"mat":"gme","qty":1}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]},"canDE":false}]}</script>
+<script id="app-js">
+(function(){
+"use strict";
+var APP_VERSION = "0.01"; /* alpha: bump by .01 each release until 1.0 */
+var REPO_URL = "https://github.com/picklewead/forever-shuffle";
+var SEED = JSON.parse(document.getElementById("seed").textContent);
+var KEY = "wf-shuffle-draft-v1";
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+var S = clone(SEED);
+var dirty = false, readOnly = false, capState = "pending", art = null, saving = false;
+var ui = { tab: "shuffle", open: {}, confirm: null, toast: "", filter: "all" };
+try { var t = localStorage.getItem("wf-tab"); if (t) ui.tab = t; } catch (e) {}
+try {
+  var d = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (d && d.state && d.baseRev === SEED.rev) { S = d.state; dirty = JSON.stringify(S) !== JSON.stringify(SEED); }
+} catch (e) {}
+
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+function uid(p){ return p + Math.random().toString(36).slice(2, 8); }
+function mat(id){ for (var i = 0; i < S.mats.length; i++) if (S.mats[i].id === id) return S.mats[i]; return null; }
+function cut(){ return (Number(S.settings.ahCut) || 0) / 100; }
+
+function money(c, opt){
+  opt = opt || {};
+  if (c == null || !isFinite(c)) return '<span class="na">' + (opt.na || "not set") + '</span>';
+  var neg = c < 0, v = Math.round(Math.abs(c));
+  var g = Math.floor(v / 10000), s = Math.floor((v % 10000) / 100), cc = v % 100, out = "";
+  if (g) out += '<span class="g">' + g + '<i>g</i></span>';
+  if (s || g) out += '<span class="s">' + s + '<i>s</i></span>';
+  out += '<span class="c">' + cc + '<i>c</i></span>';
+  var sign = opt.sign ? (neg ? "−" : "+") : (neg ? "−" : "");
+  return '<span class="coin ' + (neg ? "neg" : "pos") + '"><span class="sign">' + sign + '</span>' + out + '</span>';
+}
+function parseMoney(str){
+  str = String(str || "").trim().toLowerCase();
+  if (!str) return 0;
+  if (/^\d+(\.\d+)?$/.test(str)) return Math.round(parseFloat(str));
+  var re = /(\d+(?:\.\d+)?)\s*([gsc])/g, m, tot = 0, hit = false;
+  while ((m = re.exec(str))) { hit = true; var n = parseFloat(m[1]); tot += m[2] === "g" ? n * 10000 : m[2] === "s" ? n * 100 : n; }
+  return hit ? Math.round(tot) : NaN;
+}
+function plainMoney(c){ if (!c) return ""; return String(c); }
+
+/* effective cost of a material: cheaper of buying it or crafting it */
+function eff(id, seen){
+  seen = seen || {};
+  var m = mat(id);
+  if (!m) return { cost: NaN, how: null };
+  var buy = m.price > 0 ? m.price : Infinity, make = Infinity;
+  if (m.make && m.make.from && !seen[id]) {
+    var s2 = Object.assign({}, seen); s2[id] = 1;
+    var c = eff(m.make.from, s2).cost;
+    if (isFinite(c)) make = c * (Number(m.make.qty) || 0) / (Number(m.make.yields) || 1);
+  }
+  if (!isFinite(buy) && !isFinite(make)) return { cost: NaN, how: null };
+  return make < buy ? { cost: make, how: "make" } : { cost: buy, how: "buy" };
+}
+function recipeCost(r){
+  var tot = 0, missing = [];
+  r.reagents.forEach(function(rg){
+    var e = eff(rg.mat);
+    if (!isFinite(e.cost)) { var m = mat(rg.mat); missing.push(m ? m.name : "unknown"); }
+    else tot += e.cost * (Number(rg.qty) || 0);
+  });
+  return { cost: missing.length ? NaN : tot, partial: tot, missing: missing };
+}
+function deStats(r){
+  var log = (r.de && r.de.log) || [], n = log.length, td = 0, te = 0, ts = 0, ne = 0;
+  log.forEach(function(x){ td += x[0]; te += x[1]; ts += x[2]; if (x[1] > 0) ne++; });
+  return { n: n, td: td, te: te, ts: ts, ad: n ? td / n : 0, ae: n ? te / n : 0, as: n ? ts / n : 0, chanceE: n ? ne / n : 0 };
+}
+/* best value of one unit of a DE mat: sell it raw, or turn it into another craft and sell that */
+function matSellValue(id, skipRid){
+  var m = mat(id), best = null;
+  if (!m) return best;
+  if (m.price > 0) best = { v: m.price * (S.settings.deCut ? 1 - cut() : 1), how: "sell on AH" };
+  S.recipes.forEach(function(r2){
+    if (r2.id === skipRid) return;
+    var q = 0, other = 0, ok = true;
+    r2.reagents.forEach(function(g){
+      if (g.mat === id) { q += Number(g.qty) || 0; return; }
+      var e = eff(g.mat); if (!isFinite(e.cost)) ok = false; else other += e.cost * (Number(g.qty) || 0);
+    });
+    if (!q || !ok) return;
+    [["vendor", r2.vendor > 0 ? r2.vendor : null, "vendor it"], ["ah", r2.ahSell > 0 ? r2.ahSell * (1 - cut()) : null, "sell it on AH"]].forEach(function(o){
+      if (o[1] == null) return;
+      var v = (o[1] - other) / q;
+      if (!best || v > best.v) best = { v: v, how: "make " + r2.name + ", " + o[2] };
+    });
+  });
+  return best;
+}
+function deParts(r){
+  var st = deStats(r);
+  return [["dust", r.de.dust, st.ad], ["ess", r.de.ess, st.ae], ["shard", r.de.shard, st.as]].map(function(p){
+    var sv = p[2] ? matSellValue(p[1], r.id) : null;
+    return { key: p[0], mat: p[1], avg: p[2], sv: sv };
+  });
+}
+function deValue(r){
+  if (r.canDE === false) return null;
+  var st = deStats(r); if (!st.n) return null;
+  var v = 0, bad = false;
+  deParts(r).forEach(function(p){
+    if (!p.avg) return;
+    if (!p.sv) bad = true; else v += p.sv.v * p.avg;
+  });
+  return bad ? NaN : v;
+}
+function outcomes(r){
+  var rc = recipeCost(r), c = rc.cost;
+  var o = {
+    cost: c, missing: rc.missing,
+    vendor: r.vendor > 0 && isFinite(c) ? r.vendor - c : null,
+    ah: r.ahSell > 0 && isFinite(c) ? r.ahSell * (1 - cut()) - c : null,
+    de: null, deVal: deValue(r), save: r.ahBuy > 0 && isFinite(c) ? r.ahBuy - c : null
+  };
+  if (o.deVal != null && isFinite(o.deVal) && isFinite(c)) o.de = o.deVal - c;
+  var best = null;
+  [["vendor", "Vendor it"], ["ah", "Sell on AH"], ["de", "Disenchant"]].forEach(function(k){
+    if (o[k[0]] != null && (best == null || o[k[0]] > o[best.key])) best = { key: k[0], label: k[1] };
+  });
+  o.best = best;
+  return o;
+}
+
+/* ---------- persistence ---------- */
+function commit(){
+  dirty = JSON.stringify(S) !== JSON.stringify(SEED);
+  try { if (dirty) localStorage.setItem(KEY, JSON.stringify({ baseRev: SEED.rev, state: S })); else localStorage.removeItem(KEY); } catch (e) {}
+  render();
+}
+function toast(msg){ ui.toast = msg; render(); setTimeout(function(){ if (ui.toast === msg) { ui.toast = ""; render(); } }, 2600); }
+function buildHtml(st){
+  var hs = document.head ? document.head.querySelector("style") : null;
+  var reset = hs ? hs.textContent : "";
+  var fonts = document.querySelector('link[rel=stylesheet][href*="fonts.googleapis"]');
+  var fontTag = fonts ? '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="' + esc(fonts.getAttribute("href")) + '">\n' : "";
+  var css = document.getElementById("app-css").textContent;
+  var js = document.getElementById("app-js").textContent;
+  var json = JSON.stringify(st).replace(/</g, "\\u003c");
+  return '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + reset + '</style></head><body>' +
+    '<title>Forever Shuffle Ledger</title>\n' + fontTag +
+    '<style id="app-css">' + css + '</style>\n<div id="app"></div>\n' +
+    '<script type="application/json" id="seed">' + json + '<\/script>\n' +
+    '<script id="app-js">' + js + '<\/script>' +
+    '</body></html>';
+}
+function save(){
+  if (!art || readOnly || saving) return;
+  var next = clone(S); next.rev = (SEED.rev || 0) + 1; next.savedAt = new Date().toISOString();
+  saving = true; render();
+  art.publish(buildHtml(next)).then(function(){
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  }).catch(function(err){
+    saving = false;
+    var code = err && err.code;
+    if (code === "conflict") { toast("Someone saved a newer copy. Reloading to it."); return; }
+    if (code === "not_writer" || code === "not_granted" || code === "consent_required" || code === "capability_disabled" || code === "not_declared") {
+      readOnly = true; toast("This copy is view-only for you. Your edits stay in this browser."); return;
+    }
+    if (code === "rate_limited") { toast("Saving too fast. Wait a moment and try again."); return; }
+    toast("Save didn't go through. Your edits are still here, try again.");
+  });
+}
+function initCaps(){
+  if (!window.claude || typeof window.claude.use !== "function") { capState = "none"; render(); return; }
+  window.claude.use("artifact").then(function(a){ art = a; capState = a ? "ok" : "none"; render(); }).catch(function(){ capState = "none"; render(); });
+  window.claude.use("user").then(function(u){
+    if (!u) return;
+    u.canEdit().then(function(ok){ if (!ok) { readOnly = true; render(); } });
+  }).catch(function(){});
+}
+
+/* ---------- rendering ---------- */
+function saveBar(){
+  var when = SEED.savedAt ? new Date(SEED.savedAt).toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : null;
+  var h = '<div class="savebar">';
+  if (saving) h += '<span class="status"><span class="dot dirty"></span>Saving...</span>';
+  else if (readOnly || capState === "none") {
+    h += '<span class="status"><span class="dot ro"></span>' + (dirty ? "Your edits save automatically in this browser" : "Your edits save automatically in this browser") + '</span>';
+    if (dirty) h += '<button class="small ghost" data-act="discard">Reset to starting prices</button>';
+  } else if (dirty) {
+    h += '<span class="status"><span class="dot dirty"></span>Unsaved changes</span>';
+    h += '<button class="small primary" data-act="save"' + (capState !== "ok" ? " disabled" : "") + '>Save for everyone</button>';
+    h += '<button class="small ghost" data-act="discard">Discard</button>';
+  } else h += '<span class="status"><span class="dot"></span>' + (when ? "Saved " + esc(when) : "Up to date") + '</span>';
+  return h + '</div>';
+}
+function bestStrip(){
+  var rows = S.recipes.map(function(r){ return { r: r, o: outcomes(r) }; }).filter(function(x){ return x.o.best; });
+  rows.sort(function(a, b){ return b.o[b.o.best.key] - a.o[a.o.best.key]; });
+  if (!rows.length) return "";
+  var h = '<div class="strip">';
+  rows.slice(0, 4).forEach(function(x){
+    var v = x.o[x.o.best.key];
+    h += '<div class="pick"><span class="lbl">' + (v >= 0 ? "Top earner" : "Cheapest to level") + '</span><span class="name q-' + x.r.quality + '">' + esc(x.r.name) + '</span><span>' + esc(x.o.best.label) + ': ' + money(v, { sign: true }) + ' <span class="muted">each</span></span></div>';
+  });
+  return h + '</div>';
+}
+function outTile(label, val, sub, isBest, naText){
+  var h = '<div class="out' + (isBest ? " best" : "") + '">' + (isBest ? '<span class="pill">Best</span>' : "") + '<span class="lbl">' + label + '</span>';
+  h += '<span class="pnl">' + (val == null ? '<span class="na">' + naText + '</span>' : money(val, { sign: true })) + '</span>';
+  if (sub) h += '<span class="sub">' + sub + '</span>';
+  return h + '</div>';
+}
+function matOptions(sel, allowNone){
+  var h = allowNone ? '<option value="">None</option>' : "";
+  S.mats.forEach(function(m){ h += '<option value="' + esc(m.id) + '"' + (m.id === sel ? " selected" : "") + '>' + esc(m.name) + '</option>'; });
+  return h;
+}
+function howText(id){
+  var e = eff(id), m = mat(id);
+  if (e.how === "make") { var f = mat(m.make.from); return '<span class="how make">craft from ' + m.make.qty + ' ' + esc(f ? f.name : "?") + (m.make.yields > 1 ? ' (makes ' + m.make.yields + ')' : "") + '</span>'; }
+  if (e.how === "buy") return '<span class="how">' + (m.kind === "vendor" ? "vendor" : "auction house") + '</span>';
+  return '<span class="how" style="color:var(--warn)">needs a price</span>';
+}
+function recipeCard(r){
+  var o = outcomes(r), st = deStats(r), bk = o.best ? o.best.key : null, cutPct = S.settings.ahCut;
+  var h = '<article class="rc" id="rc-' + r.id + '"><div class="rc-head"><div>';
+  h += '<h3 class="q-' + r.quality + '">' + esc(r.name) + '</h3><div class="meta"><span class="chip">' + esc(r.prof) + '</span>';
+  if (r.skill) h += '<span class="chip">Skill ' + esc(r.skill) + '</span>';
+  if (r.verify) h += '<span class="chip warn">Check reagents in game</span>';
+  h += '</div></div><div class="cost"><span class="lbl">Cost to make one</span><span class="big">' + money(o.cost, { na: "missing prices" }) + '</span>';
+  if (o.missing.length) h += '<span class="miss">Add a price for ' + esc(o.missing.join(", ")) + '</span>';
+  h += '</div></div><div class="outs">';
+  h += outTile("Sell to vendor", o.vendor, r.vendor > 0 ? "vendor pays " + money(r.vendor) : "", bk === "vendor", "add vendor price");
+  h += outTile("Sell on AH", o.ah, r.ahSell > 0 ? "at " + money(r.ahSell) + ", after " + cutPct + "% cut" : "", bk === "ah", "add AH price");
+  if (r.canDE === false) h += outTile("Disenchant", null, "", false, "can't be disenchanted");
+  else {
+    var sub = st.n ? "avg of " + st.n + " DEs, worth " + money(o.deVal) : "";
+    h += outTile("Disenchant", o.de, sub, bk === "de", st.n ? "price the mats" : "log some DEs");
+  }
+  if (r.ahBuy > 0) h += outTile("Make vs buy", o.save, "AH price " + money(r.ahBuy), false, "");
+  h += '</div>';
+  var q = Number(r.plan) || 0;
+  h += '<div class="plan"><label for="plan-' + r.id + '">Plan to make</label><input class="qty" type="number" min="0" id="plan-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="plan" value="' + q + '">';
+  if (q && isFinite(o.cost)) {
+    h += '<span class="muted">Mats</span> ' + money(o.cost * q);
+    if (o.best) h += '<span class="muted">' + esc(o.best.label) + '</span> ' + money(o[bk] * q, { sign: true });
+  }
+  h += '</div>';
+  h += '<details class="edit" data-rid="' + r.id + '"' + (ui.open[r.id] ? " open" : "") + '><summary>Edit recipe, sell prices and DE log</summary>';
+  // recipe basics
+  h += '<div class="sec"><div class="row">';
+  h += '<div class="field"><label class="lbl" for="nm-' + r.id + '">Item name</label><input id="nm-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="name" value="' + esc(r.name) + '"></div>';
+  h += '<div class="field"><label class="lbl" for="pf-' + r.id + '">Profession</label><select id="pf-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="prof">' + ["Tailoring", "Enchanting", "Other"].map(function(p){ return '<option' + (p === r.prof ? " selected" : "") + '>' + p + '</option>'; }).join("") + '</select></div>';
+  h += '<div class="field"><label class="lbl" for="sk-' + r.id + '">Skill</label><input class="qty" id="sk-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="skill" value="' + esc(r.skill) + '" placeholder="e.g. 105"></div>';
+  h += '<label class="row" style="align-items:center;gap:6px;font-size:13px"><input type="checkbox" id="vf-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="verify"' + (r.verify ? " checked" : "") + '> Flag to check in game</label>';
+  h += '<label class="row" style="align-items:center;gap:6px;font-size:13px"><input type="checkbox" id="cd-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="canDE"' + (r.canDE !== false ? " checked" : "") + '> Can be disenchanted</label>';
+  h += '</div><div class="field"><label class="lbl" for="nt-' + r.id + '">Notes</label><input id="nt-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="notes" value="' + esc(r.notes) + '"></div></div>';
+  // reagents
+  h += '<div class="sec"><span class="lbl">Reagents per craft</span><div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Qty</th><th>Cheapest source</th><th class="r">Each</th><th class="r">Line</th><th></th></tr></thead><tbody>';
+  r.reagents.forEach(function(rg, i){
+    var e = eff(rg.mat);
+    h += '<tr><td><select id="rm-' + r.id + '-' + i + '" data-k="rg" data-rid="' + r.id + '" data-i="' + i + '" data-f="mat">' + matOptions(rg.mat) + '</select></td>';
+    h += '<td><input class="qty" type="number" min="0" step="any" id="rq-' + r.id + '-' + i + '" data-k="rg" data-rid="' + r.id + '" data-i="' + i + '" data-f="qty" value="' + rg.qty + '"></td>';
+    h += '<td>' + howText(rg.mat) + '</td><td class="r">' + money(e.cost) + '</td><td class="r">' + money(e.cost * rg.qty) + '</td>';
+    h += '<td><button class="small ghost danger" data-act="del-rg" data-rid="' + r.id + '" data-i="' + i + '" aria-label="Remove reagent">Remove</button></td></tr>';
+  });
+  h += '</tbody></table></div><div><button class="small" data-act="add-rg" data-rid="' + r.id + '">+ Add reagent</button></div></div>';
+  // prices
+  h += '<div class="sec"><span class="lbl">Sell prices for the finished item</span><div class="row">';
+  [["vendor", "Vendor pays"], ["ahSell", "AH sell price"], ["ahBuy", "AH price to buy one"]].forEach(function(p){
+    h += '<div class="field"><label class="lbl" for="' + p[0] + '-' + r.id + '">' + p[1] + '</label><input class="money" id="' + p[0] + '-' + r.id + '" data-k="r" data-money="1" data-rid="' + r.id + '" data-f="' + p[0] + '" value="' + plainMoney(r[p[0]]) + '" placeholder="copper or 1g 2s"><span class="hint">' + money(r[p[0]] || null, { na: "blank" }) + '</span></div>';
+  });
+  h += '</div></div>';
+  // DE
+  if (r.canDE !== false) {
+    h += '<div class="sec"><span class="lbl">Disenchant log</span><div class="row">';
+    [["dust", "Dust"], ["ess", "Essence"], ["shard", "Shard"]].forEach(function(p){
+      h += '<div class="field"><label class="lbl" for="de' + p[0] + '-' + r.id + '">' + p[1] + '</label><select id="de' + p[0] + '-' + r.id + '" data-k="de" data-rid="' + r.id + '" data-f="' + p[0] + '">' + matOptions(r.de[p[0]], p[0] === "shard") + '</select></div>';
+    });
+    h += '</div><div class="debtns">';
+    [[1, 0, 0, "+1 dust"], [2, 0, 0, "+2 dust"], [3, 0, 0, "+3 dust"], [0, 1, 0, "+1 essence"], [0, 2, 0, "+2 essence"], [0, 0, 1, "+1 shard"]].forEach(function(b){
+      h += '<button class="small" data-act="de-add" data-rid="' + r.id + '" data-v="' + b.slice(0, 3).join(",") + '">' + b[3] + '</button>';
+    });
+    h += '</div><p class="note">Tap one button per disenchant, matching what dropped.</p>';
+    h += '<div class="stats"><div class="stat"><span class="lbl">DEs logged</span><b>' + st.n + '</b></div><div class="stat"><span class="lbl">Dust per DE</span><b>' + st.ad.toFixed(2) + '</b></div><div class="stat"><span class="lbl">Essence per DE</span><b>' + st.ae.toFixed(2) + '</b></div><div class="stat"><span class="lbl">Essence chance</span><b>' + Math.round(st.chanceE * 100) + '%</b></div><div class="stat"><span class="lbl">Totals</span><b>' + st.td + 'd / ' + st.te + 'e' + (st.ts ? ' / ' + st.ts + 's' : '') + '</b></div></div>';
+    if (st.n) {
+      var worth = deParts(r).filter(function(p){ return p.avg; }).map(function(p){ var mm = mat(p.mat); return '<li>' + esc(mm ? mm.name : "?") + ': ' + (p.sv ? money(p.sv.v) + ' each, best move is ' + esc(p.sv.how) : '<span class="miss">needs a price</span>') + '</li>'; }).join("");
+      h += '<div class="field"><span class="lbl">What each drop is worth</span><ul class="note" style="margin:0;padding-left:18px">' + worth + '</ul></div>';
+    }
+    if (st.n) {
+      h += '<div class="log">' + r.de.log.map(function(x){ return x[1] ? '<span class="e">' + x[1] + 'e</span>' : x[2] ? '<span class="sh">' + x[2] + 's</span>' : '<span>' + x[0] + 'd</span>'; }).join("") + '</div>';
+      h += '<div class="row"><button class="small" data-act="de-undo" data-rid="' + r.id + '">Undo last</button>';
+      h += ui.confirm === "clr-" + r.id ? '<span class="confirm">Clear all ' + st.n + ' entries? <button class="small danger" data-act="de-clear" data-rid="' + r.id + '">Yes, clear</button><button class="small ghost" data-act="cancel">Keep</button></span>' : '<button class="small ghost danger" data-act="ask" data-c="clr-' + r.id + '">Clear log</button>';
+      h += '</div>';
+    }
+    h += '</div>';
+  }
+  h += '<div class="sec"><div>' + (ui.confirm === "del-" + r.id ? '<span class="confirm">Delete ' + esc(r.name) + '? <button class="small danger" data-act="del-r" data-rid="' + r.id + '">Delete</button><button class="small ghost" data-act="cancel">Keep</button></span>' : '<button class="small ghost danger" data-act="ask" data-c="del-' + r.id + '">Delete this item</button>') + '</div></div>';
+  h += '</details></article>';
+  return h;
+}
+function shuffleTab(){
+  var list = S.recipes.filter(function(r){ return ui.filter === "all" || r.prof === ui.filter; });
+  var h = '<div class="toolbar"><div class="row" style="align-items:center"><label class="lbl" for="flt">Show</label><select id="flt" data-k="ui" data-f="filter">' + ["all", "Tailoring", "Enchanting", "Other"].map(function(f){ return '<option value="' + f + '"' + (ui.filter === f ? " selected" : "") + '>' + (f === "all" ? "Everything" : f) + '</option>'; }).join("") + '</select></div>';
+  h += '<button class="primary" data-act="add-r">+ Add an item</button></div>';
+  h += '<div class="grid">' + list.map(recipeCard).join("") + '</div>';
+  return h;
+}
+/* paste prices: ProfitHub shop strings or plain "Item name  price" lines */
+function normName(n){ return String(n || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+function findMatByName(name){ var k = normName(name); for (var i = 0; i < S.mats.length; i++) if (normName(S.mats[i].name) === k) return S.mats[i]; return null; }
+function importPrices(text){
+  var res = { updated: [], added: [], noPrice: [], skipped: [] };
+  text = String(text || "").trim();
+  if (!text) return res;
+  function touch(name, price, itemId){
+    name = String(name).trim(); if (!name) return;
+    var m = findMatByName(name);
+    if (!m) { m = { id: uid("m"), name: name, price: 0, kind: "ah", make: null }; S.mats.push(m); res.added.push(name); }
+    if (itemId) m.itemId = String(itemId);
+    if (price > 0) { m.price = Math.round(price); res.updated.push(m.name); } else res.noPrice.push(m.name);
+  }
+  if (/^PROFITHUB_/i.test(text)) {
+    text.split("^").forEach(function(part){
+      var f = part.split(",");
+      if (f[0] !== "i" || f.length < 5) return;
+      touch(f.slice(4).join(","), Number(f[3]) || 0, f[1]);
+    });
+    return res;
+  }
+  var names = S.mats.map(function(m){ return m.name; }).sort(function(a, b){ return b.length - a.length; });
+  text.split(/\r?\n/).forEach(function(line){
+    line = line.trim(); if (!line) return;
+    var low = line.toLowerCase(), hit = null;
+    for (var i = 0; i < names.length; i++) if (low.indexOf(names[i].toLowerCase()) !== -1) { hit = names[i]; break; }
+    var rest, name;
+    if (hit) { name = hit; var at = low.indexOf(hit.toLowerCase()); rest = line.slice(0, at) + " " + line.slice(at + hit.length); }
+    else {
+      var mm = line.match(/^(.*?)[\s,;|:=\t]+((?:\d+(?:\.\d+)?\s*[gsc]?\s*)+)$/i);
+      if (!mm) { res.skipped.push(line); return; }
+      name = mm[1]; rest = mm[2];
+    }
+    rest = rest.replace(/[,;|:=\t"]/g, " ").trim();
+    var nums = rest.match(/(\d+(?:\.\d+)?\s*[gsc]\s*)+|\d+(?:\.\d+)?/i);
+    var price = nums ? parseMoney(nums[0].trim()) : NaN;
+    if (!isFinite(price)) { res.skipped.push(line); return; }
+    touch(name, price);
+  });
+  return res;
+}
+function importReport(r){
+  var parts = [];
+  if (r.updated.length) parts.push("Updated " + r.updated.length + ": " + r.updated.join(", ") + ".");
+  if (r.added.length) parts.push("New materials added: " + r.added.join(", ") + ".");
+  if (r.noPrice.length) parts.push("No price in the paste for: " + r.noPrice.join(", ") + ". Type those in below.");
+  if (r.skipped.length) parts.push("Couldn't read " + r.skipped.length + " line" + (r.skipped.length === 1 ? "" : "s") + ": " + r.skipped.slice(0, 5).join(" / ") + ".");
+  return parts.length ? parts.join(" ") : "Nothing found to import.";
+}
+function pricesTab(){
+  var h = '<div class="panel"><h2>Paste prices</h2><p class="note">Paste a ProfitHub shop export or one item per line with its price, like <span class="num">Linen Cloth 76</span> or <span class="num">Strange Dust 2s 35c</span>. Matching materials update, and new ones get added.</p>';
+  h += '<textarea id="pp" placeholder="Linen Cloth 76&#10;Bolt of Linen Cloth 1s 48c&#10;Lesser Magic Essence 7s 18c"></textarea><div class="row"><button class="primary" data-act="paste-prices">Fill in prices</button></div>';
+  if (ui.importMsg) h += '<p class="note" role="status">' + esc(ui.importMsg) + '</p>';
+  h += '</div>';
+  h += '<div class="panel"><h2>Settings</h2><div class="row">';
+  h += '<div class="field"><label class="lbl" for="set-cut">AH cut %</label><input class="qty" type="number" min="0" max="100" step="any" id="set-cut" data-k="set" data-f="ahCut" value="' + S.settings.ahCut + '"></div>';
+  h += '<label class="row" style="align-items:center;gap:6px;font-size:14px"><input type="checkbox" id="set-decut" data-k="set" data-f="deCut"' + (S.settings.deCut ? " checked" : "") + '> Take the AH cut off DE mats too (you plan to sell them)</label>';
+  h += '</div><p class="note">Type prices in copper (255) or coins (2s 55c, 1g 5s). Leave a crafted material\'s price blank and it uses the craft cost. If you enter both, the cheaper one wins everywhere.</p></div>';
+  h += '<div class="toolbar"><h2>Material prices</h2><button class="primary" data-act="add-m">+ Add material</button></div>';
+  h += '<div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Price</th><th>Shows as</th><th>Bought from</th><th>Can craft from</th><th class="r">You pay</th><th>Used in</th><th></th></tr></thead><tbody>';
+  S.mats.forEach(function(m){
+    var e = eff(m.id);
+    var used = S.recipes.filter(function(r){ return r.reagents.some(function(g){ return g.mat === m.id; }); }).length;
+    h += '<tr><td><input id="mn-' + m.id + '" data-k="m" data-mid="' + m.id + '" data-f="name" value="' + esc(m.name) + '" style="min-width:170px"></td>';
+    h += '<td><input class="money" id="mp-' + m.id + '" data-k="m" data-money="1" data-mid="' + m.id + '" data-f="price" value="' + plainMoney(m.price) + '" placeholder="blank"></td>';
+    h += '<td>' + money(m.price || null, { na: "blank" }) + '</td>';
+    h += '<td><select id="mk-' + m.id + '" data-k="m" data-mid="' + m.id + '" data-f="kind"><option value="ah"' + (m.kind === "ah" ? " selected" : "") + '>Auction house</option><option value="vendor"' + (m.kind === "vendor" ? " selected" : "") + '>Vendor</option></select></td>';
+    var mk = m.make || { from: "", qty: 1, yields: 1 };
+    h += '<td><div class="row" style="gap:4px;flex-wrap:nowrap;align-items:center"><input class="qty" type="number" min="0" step="any" id="mq-' + m.id + '" aria-label="Amount needed" data-k="m" data-mid="' + m.id + '" data-f="makeQty" value="' + (m.make ? mk.qty : "") + '" placeholder="qty" style="width:58px"><select id="mf-' + m.id + '" data-k="m" data-mid="' + m.id + '" data-f="makeFrom">' + '<option value="">Not craftable</option>' + S.mats.filter(function(x){ return x.id !== m.id; }).map(function(x){ return '<option value="' + x.id + '"' + (x.id === mk.from ? " selected" : "") + '>' + esc(x.name) + '</option>'; }).join("") + '</select><span class="how">makes</span><input class="qty" type="number" min="1" step="1" id="my-' + m.id + '" aria-label="Amount made" data-k="m" data-mid="' + m.id + '" data-f="makeYields" value="' + (m.make ? mk.yields : "") + '" placeholder="1" style="width:50px"></div></td>';
+    h += '<td class="r">' + money(e.cost) + '<br>' + (e.how === "make" ? '<span class="how make">crafting is cheaper</span>' : "") + '</td>';
+    h += '<td class="num">' + used + '</td>';
+    h += '<td>' + (ui.confirm === "delm-" + m.id ? '<span class="confirm"><button class="small danger" data-act="del-m" data-mid="' + m.id + '">Delete</button><button class="small ghost" data-act="cancel">Keep</button></span>' : '<button class="small ghost danger" data-act="ask" data-c="delm-' + m.id + '" aria-label="Delete material">Delete</button>') + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  h += '<div class="panel" style="margin-top:14px"><h2>Copy or paste your data</h2><p class="note">Copy the whole ledger (prices, items, DE logs) to send to someone, or paste theirs in to load it. This is also how you back up your data, since it lives only in this browser.</p><div class="row"><button data-act="copy">Copy data</button><button data-act="import">Load pasted data</button></div><textarea id="io" placeholder="Paste ledger data here, then press Load pasted data"></textarea></div>';
+  return h;
+}
+function shopTab(){
+  var buy = {}, craft = {}, plans = [], spend = 0, ret = 0, missing = {};
+  function expand(id, qty, seen){
+    var m = mat(id), e = eff(id, seen);
+    if (!m) return;
+    if (e.how === "make") {
+      var s2 = Object.assign({}, seen); s2[id] = 1;
+      craft[id] = (craft[id] || 0) + qty;
+      expand(m.make.from, qty / (m.make.yields || 1) * m.make.qty, s2);
+    } else { buy[id] = (buy[id] || 0) + qty; if (e.how == null) missing[m.name] = 1; }
+  }
+  S.recipes.forEach(function(r){
+    var q = Number(r.plan) || 0; if (!q) return;
+    var o = outcomes(r);
+    plans.push({ r: r, q: q, o: o });
+    r.reagents.forEach(function(g){ expand(g.mat, g.qty * q, {}); });
+    if (o.best) ret += (o[o.best.key] + o.cost) * q;
+  });
+  if (!plans.length) return '<div class="panel"><h2>Nothing planned yet</h2><p class="note">Set "Plan to make" on any item in the Shuffle tab and your shopping list builds here.</p></div>';
+  var h = '<div class="panel"><h2>Your plan</h2><div class="tbl-wrap"><table><thead><tr><th>Item</th><th class="r">Make</th><th>Best route</th><th class="r">Mats</th><th class="r">Profit / loss</th></tr></thead><tbody>';
+  var net = 0;
+  plans.forEach(function(p){
+    var v = p.o.best ? p.o[p.o.best.key] * p.q : null; if (v != null && isFinite(v)) net += v;
+    h += '<tr><td class="q-' + p.r.quality + '">' + esc(p.r.name) + '</td><td class="r num">' + p.q + '</td><td>' + (p.o.best ? esc(p.o.best.label) : '<span class="na">no sell price yet</span>') + '</td><td class="r">' + money(p.o.cost * p.q) + '</td><td class="r">' + money(v, { sign: true }) + '</td></tr>';
+  });
+  h += '</tbody></table></div></div>';
+  var crafts = Object.keys(craft);
+  if (crafts.length) {
+    h += '<div class="panel"><h2>Craft these first</h2><div class="tbl-wrap"><table><thead><tr><th>Material</th><th class="r">Need</th><th>From</th></tr></thead><tbody>';
+    crafts.forEach(function(id){ var m = mat(id), f = mat(m.make.from), n = Math.ceil(craft[id] / (m.make.yields || 1)); h += '<tr><td>' + esc(m.name) + '</td><td class="r num">' + Math.ceil(craft[id]) + '</td><td>' + n + ' craft' + (n === 1 ? "" : "s") + ' using ' + Math.ceil(n * m.make.qty) + ' ' + esc(f ? f.name : "?") + '</td></tr>'; });
+    h += '</tbody></table></div></div>';
+  }
+  h += '<div class="panel"><h2>Buy these</h2><div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Where</th><th class="r">Qty</th><th class="r">Each</th><th class="r">Total</th></tr></thead><tbody>';
+  Object.keys(buy).sort(function(a, b){ return (mat(a).kind > mat(b).kind) ? 1 : -1; }).forEach(function(id){
+    var m = mat(id), n = Math.ceil(buy[id] - 1e-9), each = m.price > 0 ? m.price : NaN, tot = each * n;
+    if (isFinite(tot)) spend += tot;
+    h += '<tr><td>' + esc(m.name) + '</td><td>' + (m.kind === "vendor" ? "Vendor" : "Auction house") + '</td><td class="r num">' + n + '</td><td class="r">' + money(each) + '</td><td class="r">' + money(tot) + '</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  if (Object.keys(missing).length) h += '<p class="miss">Missing prices: ' + esc(Object.keys(missing).join(", ")) + '. Totals leave these out.</p>';
+  h += '<div class="totals"><div class="stat"><span class="lbl">Shopping total</span><b>' + money(spend) + '</b></div><div class="stat"><span class="lbl">Coming back (best routes)</span><b>' + money(ret) + '</b></div><div class="stat"><span class="lbl">Net on the plan</span><b>' + money(net, { sign: true }) + '</b></div></div></div>';
+  return h;
+}
+function render(){
+  var app = document.getElementById("app");
+  var act = document.activeElement, aid = act && act.id ? act.id : null;
+  var tabs = [["shuffle", "Shuffle"], ["prices", "Prices"], ["shop", "Shopping list"]];
+  var h = '<div class="wrap"><div class="verbar"><span class="ver">Alpha v' + APP_VERSION + '</span><a class="gh" href="' + REPO_URL + '" target="_blank" rel="noopener">View on GitHub</a></div><header class="top"><div><h1>Forever Shuffle</h1><p>Tailoring and enchanting on WoW Forever: craft to disenchant, turn the essence into wands, and see which way to cash out. Every price is yours to change.</p></div>' + saveBar() + '</header>';
+  h += bestStrip();
+  h += '<nav class="tabs" role="tablist">' + tabs.map(function(t){ return '<button role="tab" aria-selected="' + (ui.tab === t[0]) + '" data-act="tab" data-t="' + t[0] + '">' + t[1] + '</button>'; }).join("") + '</nav>';
+  h += '<main>' + (ui.tab === "prices" ? pricesTab() : ui.tab === "shop" ? shopTab() : shuffleTab()) + '</main></div>';
+  if (ui.toast) h += '<div class="toast" role="status">' + esc(ui.toast) + '</div>';
+  var io = document.getElementById("io"), ioVal = io ? io.value : ""; var ppEl = document.getElementById("pp"), ppVal = ppEl ? ppEl.value : "";
+  app.innerHTML = h;
+  var io2 = document.getElementById("io"); if (io2 && ioVal) io2.value = ioVal; var pp2 = document.getElementById("pp"); if (pp2 && ppVal) pp2.value = ppVal;
+  if (aid) { var el = document.getElementById(aid); if (el && el.focus) el.focus({ preventScroll: true }); }
+}
+
+/* ---------- events ---------- */
+function findR(id){ for (var i = 0; i < S.recipes.length; i++) if (S.recipes[i].id === id) return S.recipes[i]; return null; }
+document.addEventListener("change", function(ev){
+  var t = ev.target, k = t.getAttribute && t.getAttribute("data-k"); if (!k) return;
+  var f = t.getAttribute("data-f");
+  var val = t.type === "checkbox" ? t.checked : t.value;
+  if (t.getAttribute("data-money")) { val = parseMoney(val); if (!isFinite(val)) { toast("Try copper (255) or coins like 2s 55c."); render(); return; } }
+  if (k === "ui") { ui[f] = val; render(); return; }
+  if (k === "set") { S.settings[f] = f === "ahCut" ? (Number(val) || 0) : val; return commit(); }
+  if (k === "r") { var r = findR(t.getAttribute("data-rid")); if (!r) return; r[f] = f === "plan" ? Math.max(0, Math.floor(Number(val) || 0)) : val; return commit(); }
+  if (k === "rg") { var r2 = findR(t.getAttribute("data-rid")), g = r2 && r2.reagents[+t.getAttribute("data-i")]; if (!g) return; g[f] = f === "qty" ? Math.max(0, Number(val) || 0) : val; return commit(); }
+  if (k === "de") { var r3 = findR(t.getAttribute("data-rid")); if (!r3) return; r3.de[f] = val; return commit(); }
+  if (k === "m") {
+    var m = mat(t.getAttribute("data-mid")); if (!m) return;
+    if (f === "makeFrom") { if (!val) m.make = null; else { m.make = m.make || { qty: 1, yields: 1 }; m.make.from = val; } }
+    else if (f === "makeQty" || f === "makeYields") { if (!m.make) { toast("Pick what it's crafted from first."); render(); return; } m.make[f === "makeQty" ? "qty" : "yields"] = Math.max(f === "makeYields" ? 1 : 0, Number(val) || (f === "makeYields" ? 1 : 0)); }
+    else m[f] = val;
+    return commit();
+  }
+});
+document.addEventListener("toggle", function(ev){
+  var d = ev.target; if (!d || !d.getAttribute || d.tagName !== "DETAILS") return;
+  var id = d.getAttribute("data-rid"); if (id) ui.open[id] = d.open;
+}, true);
+document.addEventListener("click", function(ev){
+  var b = ev.target.closest ? ev.target.closest("[data-act]") : null; if (!b) return;
+  var a = b.getAttribute("data-act"), rid = b.getAttribute("data-rid"), r = rid ? findR(rid) : null;
+  switch (a) {
+    case "tab": ui.tab = b.getAttribute("data-t"); ui.confirm = null; ui.importMsg = ""; try { localStorage.setItem("wf-tab", ui.tab); } catch (e) {} render(); break;
+    case "save": save(); break;
+    case "discard": S = clone(SEED); commit(); toast("Back to the starting prices."); break;
+    case "ask": ui.confirm = b.getAttribute("data-c"); render(); break;
+    case "cancel": ui.confirm = null; render(); break;
+    case "add-r":
+      var nr = { id: uid("r"), name: "New item", prof: ui.filter === "Enchanting" ? "Enchanting" : "Tailoring", skill: "", quality: "green", verify: false, canDE: true, notes: "", reagents: [{ mat: S.mats[0].id, qty: 1 }], vendor: 0, ahSell: 0, ahBuy: 0, plan: 0, de: { dust: "strangeDust", ess: "lme", shard: "sgs", log: [] } };
+      S.recipes.unshift(nr); ui.open[nr.id] = true; commit();
+      setTimeout(function(){ var el = document.getElementById("nm-" + nr.id); if (el) { el.focus(); el.select(); } }, 0);
+      break;
+    case "del-r": S.recipes = S.recipes.filter(function(x){ return x.id !== rid; }); ui.confirm = null; commit(); break;
+    case "add-rg": if (r) { r.reagents.push({ mat: S.mats[0].id, qty: 1 }); commit(); } break;
+    case "del-rg": if (r) { r.reagents.splice(+b.getAttribute("data-i"), 1); commit(); } break;
+    case "de-add": if (r) { r.de.log.push(b.getAttribute("data-v").split(",").map(Number)); commit(); } break;
+    case "de-undo": if (r) { r.de.log.pop(); commit(); } break;
+    case "de-clear": if (r) { r.de.log = []; ui.confirm = null; commit(); } break;
+    case "add-m": S.mats.push({ id: uid("m"), name: "New material", price: 0, kind: "ah", make: null }); commit(); break;
+    case "del-m":
+      var mid = b.getAttribute("data-mid");
+      var inUse = S.recipes.some(function(x){ return x.reagents.some(function(g){ return g.mat === mid; }); }) || S.mats.some(function(x){ return x.make && x.make.from === mid; });
+      if (inUse) { ui.confirm = null; toast("That material is still used in a recipe. Swap it out first."); break; }
+      S.mats = S.mats.filter(function(x){ return x.id !== mid; }); ui.confirm = null; commit(); break;
+    case "copy":
+      var txt = JSON.stringify(S), io = document.getElementById("io");
+      var fallback = function(){ if (io) { io.value = txt; io.select(); } toast("Data is in the box below. Copy it from there."); };
+      try { navigator.clipboard.writeText(txt).then(function(){ toast("Copied. Paste it anywhere to share."); }, fallback); } catch (e) { fallback(); }
+      break;
+    case "paste-prices":
+      var pp = document.getElementById("pp");
+      var rep = importPrices(pp ? pp.value : "");
+      ui.importMsg = importReport(rep);
+      if (pp && (rep.updated.length || rep.added.length)) pp.value = "";
+      commit();
+      break;
+    case "import":
+      var box = document.getElementById("io");
+      try {
+        var nd = JSON.parse(box.value);
+        if (!nd || !Array.isArray(nd.mats) || !Array.isArray(nd.recipes)) throw 0;
+        nd.rev = SEED.rev; nd.savedAt = SEED.savedAt; nd.settings = nd.settings || { ahCut: 5, deCut: true };
+        nd.recipes.forEach(function(x){ x.quality = "green"; }); S = nd; box.value = ""; commit(); toast("Loaded. It stays in this browser.");
+      } catch (e) { toast("That doesn't look like ledger data. Copy it again and paste the whole thing."); }
+      break;
+  }
+});
+
+/* tell a parent page (an embed) how tall the ledger is, so the iframe can fit it with no scrollbar */
+var lastH = 0;
+function postHeight(){
+  if (window.parent === window) return;
+  var h = Math.ceil(document.body.getBoundingClientRect().height);
+  if (h && Math.abs(h - lastH) > 2) { lastH = h; try { window.parent.postMessage({ type: "forever-shuffle-height", height: h }, "*"); } catch (e) {} }
+}
+if (window.ResizeObserver) { try { new ResizeObserver(postHeight).observe(document.body); } catch (e) {} }
+window.addEventListener("load", postHeight);
+document.addEventListener("toggle", function(){ setTimeout(postHeight, 0); }, true);
+
+render();
+initCaps();
+setTimeout(postHeight, 50);
+})();
+</script>
+
+</body>
+</html>
