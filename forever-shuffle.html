@@ -125,15 +125,23 @@ td.r,th.r{text-align:right}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--bad)}
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:12px}
 .note{font-size:13px;color:var(--muted);max-width:75ch}
+.verbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:13px}
+.ver{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:2px 10px}
+.gh{color:var(--accent);font-weight:600;text-decoration:none}
+.gh:hover{text-decoration:underline}
+.lossnote{margin:0;font-size:13px;font-weight:600;color:var(--bad)}
+.lossword{color:var(--bad);font-weight:600}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:14px;z-index:5}
 @media (max-width:560px){.cost{text-align:left}.savebar{width:100%}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <div id="app"></div>
-<script type="application/json" id="seed">{"rev":2,"savedAt":null,"settings":{"ahCut":5,"deCut":true},"mats":[{"id":"linen","name":"Linen Cloth","price":78,"kind":"ah","make":null},{"id":"boltLinen","name":"Bolt of Linen Cloth","price":0,"kind":"ah","make":{"from":"linen","qty":2,"yields":1}},{"id":"wool","name":"Wool Cloth","price":255,"kind":"ah","make":null},{"id":"boltWool","name":"Bolt of Woolen Cloth","price":0,"kind":"ah","make":{"from":"wool","qty":3,"yields":1}},{"id":"fineThread","name":"Fine Thread","price":100,"kind":"vendor","make":null},{"id":"coarseThread","name":"Coarse Thread","price":10,"kind":"vendor","make":null},{"id":"redDye","name":"Red Dye","price":50,"kind":"vendor","make":null},{"id":"cerulean","name":"Cerulean Dye","price":6900,"kind":"ah","make":null},{"id":"spiderSilk","name":"Spider's Silk","price":10,"kind":"ah","make":null},{"id":"simpleWood","name":"Simple Wood","price":38,"kind":"vendor","make":null},{"id":"strangeDust","name":"Strange Dust","price":236,"kind":"ah","make":null},{"id":"lme","name":"Lesser Magic Essence","price":729,"kind":"ah","make":{"from":"gme","qty":1,"yields":3}},{"id":"gme","name":"Greater Magic Essence","price":0,"kind":"ah","make":{"from":"lme","qty":3,"yields":1}},{"id":"lae","name":"Lesser Astral Essence","price":0,"kind":"ah","make":null},{"id":"sgs","name":"Small Glimmering Shard","price":0,"kind":"ah","make":null}],"recipes":[{"id":"r4","name":"Red Linen Robe","prof":"Tailoring","skill":"","quality":"green","verify":true,"notes":"Classic pattern (drop): 3 Bolt of Linen, 2 Coarse Thread, 2 Red Dye.","reagents":[{"mat":"boltLinen","qty":3},{"mat":"coarseThread","qty":2},{"mat":"redDye","qty":2}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]}},{"id":"r6","name":"Double-stitched Woolen Shoulders","prof":"Tailoring","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 3 Bolt of Woolen Cloth, 2 Fine Thread. Check which essence it DEs into.","reagents":[{"mat":"boltWool","qty":3},{"mat":"fineThread","qty":2}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]}},{"id":"r7","name":"Lesser Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":false,"notes":"DE log imported from your sheet (35 disenchants).","reagents":[{"mat":"simpleWood","qty":1},{"mat":"lme","qty":1}],"vendor":580,"ahSell":700,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[0,2,0],[0,1,0],[0,2,0],[0,1,0],[0,1,0],[0,1,0],[0,2,0]]}},{"id":"r8","name":"Greater Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 1 Simple Wood, 1 Greater Magic Essence.","reagents":[{"mat":"simpleWood","qty":1},{"mat":"gme","qty":1}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]}}]}</script>
+<script type="application/json" id="seed">{"rev":3,"savedAt":null,"settings":{"ahCut":5,"deCut":true},"mats":[{"id":"linen","name":"Linen Cloth","price":76,"kind":"ah","make":null,"itemId":"2589"},{"id":"boltLinen","name":"Bolt of Linen Cloth","price":148,"kind":"ah","make":{"from":"linen","qty":2,"yields":1},"itemId":"2996"},{"id":"wool","name":"Wool Cloth","price":250,"kind":"ah","make":null,"itemId":"2592"},{"id":"boltWool","name":"Bolt of Woolen Cloth","price":800,"kind":"ah","make":{"from":"wool","qty":3,"yields":1},"itemId":"2997"},{"id":"fineThread","name":"Fine Thread","price":100,"kind":"vendor","make":null},{"id":"coarseThread","name":"Coarse Thread","price":10,"kind":"vendor","make":null},{"id":"redDye","name":"Red Dye","price":50,"kind":"vendor","make":null},{"id":"cerulean","name":"Cerulean Dye","price":6900,"kind":"ah","make":null,"itemId":"249409"},{"id":"spiderSilk","name":"Spider's Silk","price":1660,"kind":"ah","make":null,"itemId":"3182"},{"id":"simpleWood","name":"Simple Wood","price":38,"kind":"vendor","make":null},{"id":"strangeDust","name":"Strange Dust","price":235,"kind":"ah","make":null,"itemId":"10940"},{"id":"lme","name":"Lesser Magic Essence","price":718,"kind":"ah","make":{"from":"gme","qty":1,"yields":3},"itemId":"10938"},{"id":"gme","name":"Greater Magic Essence","price":0,"kind":"ah","make":{"from":"lme","qty":3,"yields":1},"itemId":"10939"},{"id":"lae","name":"Lesser Astral Essence","price":733,"kind":"ah","make":{"from":"gae","qty":1,"yields":3},"itemId":"10998"},{"id":"sgs","name":"Small Glimmering Shard","price":190,"kind":"ah","make":null,"itemId":"10978"},{"id":"gae","name":"Greater Astral Essence","price":2100,"kind":"ah","make":{"from":"lae","qty":3,"yields":1},"itemId":"11082"},{"id":"thickSilk","name":"Thick Spider's Silk","price":1900,"kind":"ah","make":null,"itemId":"4337"},{"id":"bleach","name":"Bleach","price":0,"kind":"vendor","make":null}],"recipes":[{"id":"r1","name":"Handstitched Linen Pants","prof":"Tailoring","skill":"","quality":"green","verify":false,"canDE":true,"notes":"Learned from trainer. Your numbers: 8 Linen (4 bolts) + 2 Fine Thread each. DE log imported from your sheet (35 disenchants).","reagents":[{"mat":"boltLinen","qty":4},{"mat":"fineThread","qty":2}],"vendor":0,"ahSell":1100,"ahBuy":1100,"plan":8,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[2,0,0],[1,0,0],[2,0,0],[2,0,0],[2,0,0],[1,0,0],[1,0,0],[2,0,0],[0,2,0],[0,1,0],[0,2,0],[0,1,0],[0,1,0],[0,1,0],[0,2,0]]}},{"id":"r10","name":"Heavy Woolen Pants","prof":"Tailoring","skill":"","quality":"green","verify":false,"canDE":true,"notes":"5 Bolt of Woolen Cloth (15 Wool Cloth) + 4 Fine Thread.","reagents":[{"mat":"boltWool","qty":5},{"mat":"fineThread","qty":4}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]}},{"id":"r11","name":"Simple Kilt","prof":"Tailoring","skill":"","quality":"green","verify":false,"canDE":true,"notes":"From in game: 4 Bolt of Linen Cloth, 1 Fine Thread.","reagents":[{"mat":"boltLinen","qty":4},{"mat":"fineThread","qty":1}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]}},{"id":"r12","name":"White Woolen Dress","prof":"Tailoring","skill":"","quality":"green","verify":false,"canDE":true,"notes":"From in game: 3 Bolt of Woolen Cloth, 4 Bleach, 1 Fine Thread.","reagents":[{"mat":"boltWool","qty":3},{"mat":"bleach","qty":4},{"mat":"fineThread","qty":1}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]}},{"id":"r4","name":"Red Linen Robe","prof":"Tailoring","skill":"","quality":"green","verify":false,"notes":"Confirmed in game: 3 Bolt of Linen Cloth, 2 Coarse Thread, 2 Red Dye.","reagents":[{"mat":"boltLinen","qty":3},{"mat":"coarseThread","qty":2},{"mat":"redDye","qty":2}],"vendor":99,"ahSell":3500,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[[0,1,0]]},"canDE":true},{"id":"r6","name":"Double-stitched Woolen Shoulders","prof":"Tailoring","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 3 Bolt of Woolen Cloth, 2 Fine Thread. Check which essence it DEs into.","reagents":[{"mat":"boltWool","qty":3},{"mat":"fineThread","qty":2}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]},"canDE":true},{"id":"r7","name":"Lesser Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":false,"notes":"Can't be disenchanted. This is where DE'd essence goes: vendor it or sell it on the AH.","reagents":[{"mat":"simpleWood","qty":1},{"mat":"lme","qty":1}],"vendor":580,"ahSell":700,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"lme","shard":"sgs","log":[]},"canDE":false},{"id":"r8","name":"Greater Magic Wand","prof":"Enchanting","skill":"","quality":"green","verify":true,"notes":"Classic recipe: 1 Simple Wood, 1 Greater Magic Essence. Set as not disenchantable like the Lesser wand, check in game.","reagents":[{"mat":"simpleWood","qty":1},{"mat":"gme","qty":1}],"vendor":0,"ahSell":0,"ahBuy":0,"plan":0,"de":{"dust":"strangeDust","ess":"gme","shard":"sgs","log":[]},"canDE":false}]}</script>
 <script id="app-js">
 (function(){
 "use strict";
+var APP_VERSION = "0.04"; /* alpha: bump by .01 each release until 1.0 */
+var REPO_URL = "https://github.com/picklewead/forever-shuffle";
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var KEY = "wf-shuffle-draft-v1";
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
@@ -143,7 +151,18 @@ var ui = { tab: "shuffle", open: {}, confirm: null, toast: "", filter: "all" };
 try { var t = localStorage.getItem("wf-tab"); if (t) ui.tab = t; } catch (e) {}
 try {
   var d = JSON.parse(localStorage.getItem(KEY) || "null");
-  if (d && d.state && d.baseRev === SEED.rev) { S = d.state; dirty = JSON.stringify(S) !== JSON.stringify(SEED); }
+  if (d && d.state && d.baseRev === SEED.rev) {
+    S = d.state;
+    /* bring in items and materials added to newer builds, skipping ones this viewer deleted */
+    S.removed = S.removed || { recipes: [], mats: [] };
+    var haveM = {}, haveR = {};
+    S.mats.forEach(function(m){ haveM[m.id] = 1; });
+    S.recipes.forEach(function(r){ haveR[r.id] = 1; });
+    SEED.mats.forEach(function(m){ if (!haveM[m.id] && S.removed.mats.indexOf(m.id) === -1) S.mats.push(clone(m)); });
+    SEED.recipes.forEach(function(r){ if (!haveR[r.id] && S.removed.recipes.indexOf(r.id) === -1) S.recipes.push(clone(r)); });
+    S.recipes.forEach(function(r){ if (!(r.ahSell > 0) && r.ahBuy > 0) r.ahSell = r.ahBuy; });
+    dirty = JSON.stringify(S) !== JSON.stringify(SEED);
+  }
 } catch (e) {}
 
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -200,16 +219,43 @@ function deStats(r){
   log.forEach(function(x){ td += x[0]; te += x[1]; ts += x[2]; if (x[1] > 0) ne++; });
   return { n: n, td: td, te: te, ts: ts, ad: n ? td / n : 0, ae: n ? te / n : 0, as: n ? ts / n : 0, chanceE: n ? ne / n : 0 };
 }
-function deValue(r){
-  var st = deStats(r); if (!st.n) return null;
-  var parts = [[r.de.dust, st.ad], [r.de.ess, st.ae], [r.de.shard, st.as]], v = 0, bad = false;
-  parts.forEach(function(p){
-    if (!p[1]) return;
-    var m = mat(p[0]); var price = m ? m.price : 0;
-    if (!(price > 0)) bad = true; else v += price * p[1];
+/* best value of one unit of a DE mat: sell it raw, or turn it into another craft and sell that */
+function matSellValue(id, skipRid){
+  var m = mat(id), best = null;
+  if (!m) return best;
+  if (m.price > 0) best = { v: m.price * (S.settings.deCut ? 1 - cut() : 1), how: "sell on AH" };
+  S.recipes.forEach(function(r2){
+    if (r2.id === skipRid) return;
+    var q = 0, other = 0, ok = true;
+    r2.reagents.forEach(function(g){
+      if (g.mat === id) { q += Number(g.qty) || 0; return; }
+      var e = eff(g.mat); if (!isFinite(e.cost)) ok = false; else other += e.cost * (Number(g.qty) || 0);
+    });
+    if (!q || !ok) return;
+    [["vendor", r2.vendor > 0 ? r2.vendor : null, "vendor it"], ["ah", r2.ahSell > 0 ? r2.ahSell * (1 - cut()) : null, "sell it on AH"]].forEach(function(o){
+      if (o[1] == null) return;
+      var v = (o[1] - other) / q;
+      if (!best || v > best.v) best = { v: v, how: "make " + r2.name + ", " + o[2] };
+    });
   });
-  if (bad) return NaN;
-  return S.settings.deCut ? v * (1 - cut()) : v;
+  return best;
+}
+function deParts(r){
+  var st = deStats(r);
+  return [["dust", r.de.dust, st.ad], ["ess", r.de.ess, st.ae], ["shard", r.de.shard, st.as]].map(function(p){
+    var sv = p[2] ? matSellValue(p[1], r.id) : null;
+    return { key: p[0], mat: p[1], avg: p[2], sv: sv };
+  });
+}
+function deValue(r){
+  if (r.canDE === false) return null;
+  var st = deStats(r); if (!st.n) return null;
+  var v = 0, bad = false;
+  deParts(r).forEach(function(p){
+    if (!p.avg) return;
+    if (!p.sv) bad = true; else v += p.sv.v * p.avg;
+  });
+  return bad ? NaN : v;
 }
 function outcomes(r){
   var rc = recipeCost(r), c = rc.cost;
@@ -217,7 +263,7 @@ function outcomes(r){
     cost: c, missing: rc.missing,
     vendor: r.vendor > 0 && isFinite(c) ? r.vendor - c : null,
     ah: r.ahSell > 0 && isFinite(c) ? r.ahSell * (1 - cut()) - c : null,
-    de: null, deVal: deValue(r), save: r.ahBuy > 0 && isFinite(c) ? r.ahBuy - c : null
+    de: null, deVal: deValue(r), save: r.ahSell > 0 && isFinite(c) ? r.ahSell - c : null
   };
   if (o.deVal != null && isFinite(o.deVal) && isFinite(c)) o.de = o.deVal - c;
   var best = null;
@@ -292,13 +338,13 @@ function saveBar(){
   return h + '</div>';
 }
 function bestStrip(){
-  var rows = S.recipes.map(function(r){ return { r: r, o: outcomes(r) }; }).filter(function(x){ return x.o.best; });
+  var rows = S.recipes.map(function(r){ return { r: r, o: outcomes(r) }; }).filter(function(x){ return x.o.best && x.o[x.o.best.key] > 0; });
   rows.sort(function(a, b){ return b.o[b.o.best.key] - a.o[a.o.best.key]; });
   if (!rows.length) return "";
   var h = '<div class="strip">';
   rows.slice(0, 4).forEach(function(x){
     var v = x.o[x.o.best.key];
-    h += '<div class="pick"><span class="lbl">' + (v >= 0 ? "Top earner" : "Cheapest to level") + '</span><span class="name q-' + x.r.quality + '">' + esc(x.r.name) + '</span><span>' + esc(x.o.best.label) + ': ' + money(v, { sign: true }) + ' <span class="muted">each</span></span></div>';
+    h += '<div class="pick"><span class="lbl">' + "Top earner" + '</span><span class="name q-' + x.r.quality + '">' + esc(x.r.name) + '</span><span>' + esc(x.o.best.label) + ': ' + money(v, { sign: true }) + ' <span class="muted">each</span></span></div>';
   });
   return h + '</div>';
 }
@@ -308,9 +354,10 @@ function outTile(label, val, sub, isBest, naText){
   if (sub) h += '<span class="sub">' + sub + '</span>';
   return h + '</div>';
 }
-function matOptions(sel, allowNone){
+var DE_FILTER = { dust: /dust/i, ess: /essence/i, shard: /shard|crystal/i };
+function matOptions(sel, allowNone, only){
   var h = allowNone ? '<option value="">None</option>' : "";
-  S.mats.forEach(function(m){ h += '<option value="' + esc(m.id) + '"' + (m.id === sel ? " selected" : "") + '>' + esc(m.name) + '</option>'; });
+  S.mats.forEach(function(m){ if (only && !only.test(m.name) && m.id !== sel) return; h += '<option value="' + esc(m.id) + '"' + (m.id === sel ? " selected" : "") + '>' + esc(m.name) + '</option>'; });
   return h;
 }
 function howText(id){
@@ -320,7 +367,7 @@ function howText(id){
   return '<span class="how" style="color:var(--warn)">needs a price</span>';
 }
 function recipeCard(r){
-  var o = outcomes(r), st = deStats(r), bk = o.best ? o.best.key : null, cutPct = S.settings.ahCut;
+  var o = outcomes(r), st = deStats(r), losing = !!(o.best && !(o[o.best.key] > 0)), bk = o.best && !losing ? o.best.key : null, cutPct = S.settings.ahCut;
   var h = '<article class="rc" id="rc-' + r.id + '"><div class="rc-head"><div>';
   h += '<h3 class="q-' + r.quality + '">' + esc(r.name) + '</h3><div class="meta"><span class="chip">' + esc(r.prof) + '</span>';
   if (r.skill) h += '<span class="chip">Skill ' + esc(r.skill) + '</span>';
@@ -330,17 +377,19 @@ function recipeCard(r){
   h += '</div></div><div class="outs">';
   h += outTile("Sell to vendor", o.vendor, r.vendor > 0 ? "vendor pays " + money(r.vendor) : "", bk === "vendor", "add vendor price");
   h += outTile("Sell on AH", o.ah, r.ahSell > 0 ? "at " + money(r.ahSell) + ", after " + cutPct + "% cut" : "", bk === "ah", "add AH price");
-  {
+  if (r.canDE === false) h += outTile("Disenchant", null, "", false, "can't be disenchanted");
+  else {
     var sub = st.n ? "avg of " + st.n + " DEs, worth " + money(o.deVal) : "";
     h += outTile("Disenchant", o.de, sub, bk === "de", st.n ? "price the mats" : "log some DEs");
   }
-  if (r.ahBuy > 0) h += outTile("Make vs buy", o.save, "AH price " + money(r.ahBuy), false, "");
+  if (r.ahSell > 0) h += outTile("Make vs buy", o.save, "saved vs buying at " + money(r.ahSell), false, "");
   h += '</div>';
+  if (losing) h += '<p class="lossnote">Loses gold every way at these prices. Skip it unless you need the skill-ups.</p>';
   var q = Number(r.plan) || 0;
   h += '<div class="plan"><label for="plan-' + r.id + '">Plan to make</label><input class="qty" type="number" min="0" id="plan-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="plan" value="' + q + '">';
   if (q && isFinite(o.cost)) {
     h += '<span class="muted">Mats</span> ' + money(o.cost * q);
-    if (o.best) h += '<span class="muted">' + esc(o.best.label) + '</span> ' + money(o[bk] * q, { sign: true });
+    if (o.best) h += '<span class="muted">' + (losing ? "Best case" : esc(o.best.label)) + '</span> ' + money(o[o.best.key] * q, { sign: true });
   }
   h += '</div>';
   h += '<details class="edit" data-rid="' + r.id + '"' + (ui.open[r.id] ? " open" : "") + '><summary>Edit recipe, sell prices and DE log</summary>';
@@ -350,6 +399,7 @@ function recipeCard(r){
   h += '<div class="field"><label class="lbl" for="pf-' + r.id + '">Profession</label><select id="pf-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="prof">' + ["Tailoring", "Enchanting", "Other"].map(function(p){ return '<option' + (p === r.prof ? " selected" : "") + '>' + p + '</option>'; }).join("") + '</select></div>';
   h += '<div class="field"><label class="lbl" for="sk-' + r.id + '">Skill</label><input class="qty" id="sk-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="skill" value="' + esc(r.skill) + '" placeholder="e.g. 105"></div>';
   h += '<label class="row" style="align-items:center;gap:6px;font-size:13px"><input type="checkbox" id="vf-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="verify"' + (r.verify ? " checked" : "") + '> Flag to check in game</label>';
+  h += '<label class="row" style="align-items:center;gap:6px;font-size:13px"><input type="checkbox" id="cd-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="canDE"' + (r.canDE !== false ? " checked" : "") + '> Can be disenchanted</label>';
   h += '</div><div class="field"><label class="lbl" for="nt-' + r.id + '">Notes</label><input id="nt-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="notes" value="' + esc(r.notes) + '"></div></div>';
   // reagents
   h += '<div class="sec"><span class="lbl">Reagents per craft</span><div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Qty</th><th>Cheapest source</th><th class="r">Each</th><th class="r">Line</th><th></th></tr></thead><tbody>';
@@ -363,15 +413,15 @@ function recipeCard(r){
   h += '</tbody></table></div><div><button class="small" data-act="add-rg" data-rid="' + r.id + '">+ Add reagent</button></div></div>';
   // prices
   h += '<div class="sec"><span class="lbl">Sell prices for the finished item</span><div class="row">';
-  [["vendor", "Vendor pays"], ["ahSell", "AH sell price"], ["ahBuy", "AH price to buy one"]].forEach(function(p){
+  [["vendor", "Vendor pays"], ["ahSell", "AH price"]].forEach(function(p){
     h += '<div class="field"><label class="lbl" for="' + p[0] + '-' + r.id + '">' + p[1] + '</label><input class="money" id="' + p[0] + '-' + r.id + '" data-k="r" data-money="1" data-rid="' + r.id + '" data-f="' + p[0] + '" value="' + plainMoney(r[p[0]]) + '" placeholder="copper or 1g 2s"><span class="hint">' + money(r[p[0]] || null, { na: "blank" }) + '</span></div>';
   });
   h += '</div></div>';
   // DE
-  {
+  if (r.canDE !== false) {
     h += '<div class="sec"><span class="lbl">Disenchant log</span><div class="row">';
     [["dust", "Dust"], ["ess", "Essence"], ["shard", "Shard"]].forEach(function(p){
-      h += '<div class="field"><label class="lbl" for="de' + p[0] + '-' + r.id + '">' + p[1] + '</label><select id="de' + p[0] + '-' + r.id + '" data-k="de" data-rid="' + r.id + '" data-f="' + p[0] + '">' + matOptions(r.de[p[0]], p[0] === "shard") + '</select></div>';
+      h += '<div class="field"><label class="lbl" for="de' + p[0] + '-' + r.id + '">' + p[1] + '</label><select id="de' + p[0] + '-' + r.id + '" data-k="de" data-rid="' + r.id + '" data-f="' + p[0] + '">' + matOptions(r.de[p[0]], p[0] === "shard", DE_FILTER[p[0]]) + '</select></div>';
     });
     h += '</div><div class="debtns">';
     [[1, 0, 0, "+1 dust"], [2, 0, 0, "+2 dust"], [3, 0, 0, "+3 dust"], [0, 1, 0, "+1 essence"], [0, 2, 0, "+2 essence"], [0, 0, 1, "+1 shard"]].forEach(function(b){
@@ -379,6 +429,10 @@ function recipeCard(r){
     });
     h += '</div><p class="note">Tap one button per disenchant, matching what dropped.</p>';
     h += '<div class="stats"><div class="stat"><span class="lbl">DEs logged</span><b>' + st.n + '</b></div><div class="stat"><span class="lbl">Dust per DE</span><b>' + st.ad.toFixed(2) + '</b></div><div class="stat"><span class="lbl">Essence per DE</span><b>' + st.ae.toFixed(2) + '</b></div><div class="stat"><span class="lbl">Essence chance</span><b>' + Math.round(st.chanceE * 100) + '%</b></div><div class="stat"><span class="lbl">Totals</span><b>' + st.td + 'd / ' + st.te + 'e' + (st.ts ? ' / ' + st.ts + 's' : '') + '</b></div></div>';
+    if (st.n) {
+      var worth = deParts(r).filter(function(p){ return p.avg; }).map(function(p){ var mm = mat(p.mat); return '<li>' + esc(mm ? mm.name : "?") + ': ' + (p.sv ? money(p.sv.v) + ' each, best move is ' + esc(p.sv.how) : '<span class="miss">needs a price</span>') + '</li>'; }).join("");
+      h += '<div class="field"><span class="lbl">What each drop is worth</span><ul class="note" style="margin:0;padding-left:18px">' + worth + '</ul></div>';
+    }
     if (st.n) {
       h += '<div class="log">' + r.de.log.map(function(x){ return x[1] ? '<span class="e">' + x[1] + 'e</span>' : x[2] ? '<span class="sh">' + x[2] + 's</span>' : '<span>' + x[0] + 'd</span>'; }).join("") + '</div>';
       h += '<div class="row"><button class="small" data-act="de-undo" data-rid="' + r.id + '">Undo last</button>';
@@ -398,8 +452,62 @@ function shuffleTab(){
   h += '<div class="grid">' + list.map(recipeCard).join("") + '</div>';
   return h;
 }
+/* paste prices: ProfitHub shop strings or plain "Item name  price" lines */
+function normName(n){ return String(n || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+function findMatByName(name){ var k = normName(name); for (var i = 0; i < S.mats.length; i++) if (normName(S.mats[i].name) === k) return S.mats[i]; return null; }
+function importPrices(text){
+  var res = { updated: [], added: [], noPrice: [], skipped: [] };
+  text = String(text || "").trim();
+  if (!text) return res;
+  function touch(name, price, itemId){
+    name = String(name).trim(); if (!name) return;
+    var m = findMatByName(name);
+    if (!m) { m = { id: uid("m"), name: name, price: 0, kind: "ah", make: null }; S.mats.push(m); res.added.push(name); }
+    if (itemId) m.itemId = String(itemId);
+    if (price > 0) { m.price = Math.round(price); res.updated.push(m.name); } else res.noPrice.push(m.name);
+  }
+  if (/^PROFITHUB_/i.test(text)) {
+    text.split("^").forEach(function(part){
+      var f = part.split(",");
+      if (f[0] !== "i" || f.length < 5) return;
+      touch(f.slice(4).join(","), Number(f[3]) || 0, f[1]);
+    });
+    return res;
+  }
+  var names = S.mats.map(function(m){ return m.name; }).sort(function(a, b){ return b.length - a.length; });
+  text.split(/\r?\n/).forEach(function(line){
+    line = line.trim(); if (!line) return;
+    var low = line.toLowerCase(), hit = null;
+    for (var i = 0; i < names.length; i++) if (low.indexOf(names[i].toLowerCase()) !== -1) { hit = names[i]; break; }
+    var rest, name;
+    if (hit) { name = hit; var at = low.indexOf(hit.toLowerCase()); rest = line.slice(0, at) + " " + line.slice(at + hit.length); }
+    else {
+      var mm = line.match(/^(.*?)[\s,;|:=\t]+((?:\d+(?:\.\d+)?\s*[gsc]?\s*)+)$/i);
+      if (!mm) { res.skipped.push(line); return; }
+      name = mm[1]; rest = mm[2];
+    }
+    rest = rest.replace(/[,;|:=\t"]/g, " ").trim();
+    var nums = rest.match(/(\d+(?:\.\d+)?\s*[gsc]\s*)+|\d+(?:\.\d+)?/i);
+    var price = nums ? parseMoney(nums[0].trim()) : NaN;
+    if (!isFinite(price)) { res.skipped.push(line); return; }
+    touch(name, price);
+  });
+  return res;
+}
+function importReport(r){
+  var parts = [];
+  if (r.updated.length) parts.push("Updated " + r.updated.length + ": " + r.updated.join(", ") + ".");
+  if (r.added.length) parts.push("New materials added: " + r.added.join(", ") + ".");
+  if (r.noPrice.length) parts.push("No price in the paste for: " + r.noPrice.join(", ") + ". Type those in below.");
+  if (r.skipped.length) parts.push("Couldn't read " + r.skipped.length + " line" + (r.skipped.length === 1 ? "" : "s") + ": " + r.skipped.slice(0, 5).join(" / ") + ".");
+  return parts.length ? parts.join(" ") : "Nothing found to import.";
+}
 function pricesTab(){
-  var h = '<div class="panel"><h2>Settings</h2><div class="row">';
+  var h = '<div class="panel"><h2>Paste prices</h2><p class="note">Paste a ProfitHub shop export or one item per line with its price, like <span class="num">Linen Cloth 76</span> or <span class="num">Strange Dust 2s 35c</span>. Matching materials update, and new ones get added.</p>';
+  h += '<textarea id="pp" placeholder="Linen Cloth 76&#10;Bolt of Linen Cloth 1s 48c&#10;Lesser Magic Essence 7s 18c"></textarea><div class="row"><button class="primary" data-act="paste-prices">Fill in prices</button></div>';
+  if (ui.importMsg) h += '<p class="note" role="status">' + esc(ui.importMsg) + '</p>';
+  h += '</div>';
+  h += '<div class="panel"><h2>Settings</h2><div class="row">';
   h += '<div class="field"><label class="lbl" for="set-cut">AH cut %</label><input class="qty" type="number" min="0" max="100" step="any" id="set-cut" data-k="set" data-f="ahCut" value="' + S.settings.ahCut + '"></div>';
   h += '<label class="row" style="align-items:center;gap:6px;font-size:14px"><input type="checkbox" id="set-decut" data-k="set" data-f="deCut"' + (S.settings.deCut ? " checked" : "") + '> Take the AH cut off DE mats too (you plan to sell them)</label>';
   h += '</div><p class="note">Type prices in copper (255) or coins (2s 55c, 1g 5s). Leave a crafted material\'s price blank and it uses the craft cost. If you enter both, the cheaper one wins everywhere.</p></div>';
@@ -445,7 +553,7 @@ function shopTab(){
   var net = 0;
   plans.forEach(function(p){
     var v = p.o.best ? p.o[p.o.best.key] * p.q : null; if (v != null && isFinite(v)) net += v;
-    h += '<tr><td class="q-' + p.r.quality + '">' + esc(p.r.name) + '</td><td class="r num">' + p.q + '</td><td>' + (p.o.best ? esc(p.o.best.label) : '<span class="na">no sell price yet</span>') + '</td><td class="r">' + money(p.o.cost * p.q) + '</td><td class="r">' + money(v, { sign: true }) + '</td></tr>';
+    h += '<tr><td class="q-' + p.r.quality + '">' + esc(p.r.name) + '</td><td class="r num">' + p.q + '</td><td>' + (p.o.best ? (p.o[p.o.best.key] > 0 ? esc(p.o.best.label) : '<span class="lossword">Loses gold</span>') : '<span class="na">no sell price yet</span>') + '</td><td class="r">' + money(p.o.cost * p.q) + '</td><td class="r">' + money(v, { sign: true }) + '</td></tr>';
   });
   h += '</tbody></table></div></div>';
   var crafts = Object.keys(craft);
@@ -469,14 +577,14 @@ function render(){
   var app = document.getElementById("app");
   var act = document.activeElement, aid = act && act.id ? act.id : null;
   var tabs = [["shuffle", "Shuffle"], ["prices", "Prices"], ["shop", "Shopping list"]];
-  var h = '<div class="wrap"><header class="top"><div><h1>Forever Shuffle</h1><p>Green tailoring and enchanting crafts on WoW Forever, built for disenchanting: what to buy, what to craft, and whether DE beats selling. Every price is yours to change.</p></div>' + saveBar() + '</header>';
+  var h = '<div class="wrap"><div class="verbar"><span class="ver">Alpha v' + APP_VERSION + '</span><a class="gh" href="' + REPO_URL + '" target="_blank" rel="noopener">View on GitHub</a></div><header class="top"><div><h1>Forever Shuffle</h1><p>Tailoring and enchanting on WoW Forever: craft to disenchant, turn the essence into wands, and see which way to cash out. Every price is yours to change.</p></div>' + saveBar() + '</header>';
   h += bestStrip();
   h += '<nav class="tabs" role="tablist">' + tabs.map(function(t){ return '<button role="tab" aria-selected="' + (ui.tab === t[0]) + '" data-act="tab" data-t="' + t[0] + '">' + t[1] + '</button>'; }).join("") + '</nav>';
   h += '<main>' + (ui.tab === "prices" ? pricesTab() : ui.tab === "shop" ? shopTab() : shuffleTab()) + '</main></div>';
   if (ui.toast) h += '<div class="toast" role="status">' + esc(ui.toast) + '</div>';
-  var io = document.getElementById("io"), ioVal = io ? io.value : "";
+  var io = document.getElementById("io"), ioVal = io ? io.value : ""; var ppEl = document.getElementById("pp"), ppVal = ppEl ? ppEl.value : "";
   app.innerHTML = h;
-  var io2 = document.getElementById("io"); if (io2 && ioVal) io2.value = ioVal;
+  var io2 = document.getElementById("io"); if (io2 && ioVal) io2.value = ioVal; var pp2 = document.getElementById("pp"); if (pp2 && ppVal) pp2.value = ppVal;
   if (aid) { var el = document.getElementById(aid); if (el && el.focus) el.focus({ preventScroll: true }); }
 }
 
@@ -508,17 +616,17 @@ document.addEventListener("click", function(ev){
   var b = ev.target.closest ? ev.target.closest("[data-act]") : null; if (!b) return;
   var a = b.getAttribute("data-act"), rid = b.getAttribute("data-rid"), r = rid ? findR(rid) : null;
   switch (a) {
-    case "tab": ui.tab = b.getAttribute("data-t"); ui.confirm = null; try { localStorage.setItem("wf-tab", ui.tab); } catch (e) {} render(); break;
+    case "tab": ui.tab = b.getAttribute("data-t"); ui.confirm = null; ui.importMsg = ""; try { localStorage.setItem("wf-tab", ui.tab); } catch (e) {} render(); break;
     case "save": save(); break;
     case "discard": S = clone(SEED); commit(); toast("Back to the starting prices."); break;
     case "ask": ui.confirm = b.getAttribute("data-c"); render(); break;
     case "cancel": ui.confirm = null; render(); break;
     case "add-r":
-      var nr = { id: uid("r"), name: "New item", prof: ui.filter === "Enchanting" ? "Enchanting" : "Tailoring", skill: "", quality: "green", verify: false, notes: "", reagents: [{ mat: S.mats[0].id, qty: 1 }], vendor: 0, ahSell: 0, ahBuy: 0, plan: 0, de: { dust: "strangeDust", ess: "lme", shard: "sgs", log: [] } };
+      var nr = { id: uid("r"), name: "New item", prof: ui.filter === "Enchanting" ? "Enchanting" : "Tailoring", skill: "", quality: "green", verify: false, canDE: true, notes: "", reagents: [{ mat: S.mats[0].id, qty: 1 }], vendor: 0, ahSell: 0, ahBuy: 0, plan: 0, de: { dust: "strangeDust", ess: "lme", shard: "sgs", log: [] } };
       S.recipes.unshift(nr); ui.open[nr.id] = true; commit();
       setTimeout(function(){ var el = document.getElementById("nm-" + nr.id); if (el) { el.focus(); el.select(); } }, 0);
       break;
-    case "del-r": S.recipes = S.recipes.filter(function(x){ return x.id !== rid; }); ui.confirm = null; commit(); break;
+    case "del-r": S.removed = S.removed || { recipes: [], mats: [] }; S.removed.recipes.push(rid); S.recipes = S.recipes.filter(function(x){ return x.id !== rid; }); ui.confirm = null; commit(); break;
     case "add-rg": if (r) { r.reagents.push({ mat: S.mats[0].id, qty: 1 }); commit(); } break;
     case "del-rg": if (r) { r.reagents.splice(+b.getAttribute("data-i"), 1); commit(); } break;
     case "de-add": if (r) { r.de.log.push(b.getAttribute("data-v").split(",").map(Number)); commit(); } break;
@@ -529,11 +637,18 @@ document.addEventListener("click", function(ev){
       var mid = b.getAttribute("data-mid");
       var inUse = S.recipes.some(function(x){ return x.reagents.some(function(g){ return g.mat === mid; }); }) || S.mats.some(function(x){ return x.make && x.make.from === mid; });
       if (inUse) { ui.confirm = null; toast("That material is still used in a recipe. Swap it out first."); break; }
-      S.mats = S.mats.filter(function(x){ return x.id !== mid; }); ui.confirm = null; commit(); break;
+      S.removed = S.removed || { recipes: [], mats: [] }; S.removed.mats.push(mid); S.mats = S.mats.filter(function(x){ return x.id !== mid; }); ui.confirm = null; commit(); break;
     case "copy":
       var txt = JSON.stringify(S), io = document.getElementById("io");
       var fallback = function(){ if (io) { io.value = txt; io.select(); } toast("Data is in the box below. Copy it from there."); };
       try { navigator.clipboard.writeText(txt).then(function(){ toast("Copied. Paste it anywhere to share."); }, fallback); } catch (e) { fallback(); }
+      break;
+    case "paste-prices":
+      var pp = document.getElementById("pp");
+      var rep = importPrices(pp ? pp.value : "");
+      ui.importMsg = importReport(rep);
+      if (pp && (rep.updated.length || rep.added.length)) pp.value = "";
+      commit();
       break;
     case "import":
       var box = document.getElementById("io");
@@ -547,8 +662,20 @@ document.addEventListener("click", function(ev){
   }
 });
 
+/* tell a parent page (an embed) how tall the ledger is, so the iframe can fit it with no scrollbar */
+var lastH = 0;
+function postHeight(){
+  if (window.parent === window) return;
+  var h = Math.ceil(document.body.getBoundingClientRect().height);
+  if (h && Math.abs(h - lastH) > 2) { lastH = h; try { window.parent.postMessage({ type: "forever-shuffle-height", height: h }, "*"); } catch (e) {} }
+}
+if (window.ResizeObserver) { try { new ResizeObserver(postHeight).observe(document.body); } catch (e) {} }
+window.addEventListener("load", postHeight);
+document.addEventListener("toggle", function(){ setTimeout(postHeight, 0); }, true);
+
 render();
 initCaps();
+setTimeout(postHeight, 50);
 })();
 </script>
 
