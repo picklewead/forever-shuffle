@@ -140,7 +140,7 @@ td.r,th.r{text-align:right}
 <script id="app-js">
 (function(){
 "use strict";
-var APP_VERSION = "0.04"; /* alpha: bump by .01 each release until 1.0 */
+var APP_VERSION = "0.05"; /* alpha: bump by .01 each release until 1.0 */
 var REPO_URL = "https://github.com/picklewead/forever-shuffle";
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var KEY = "wf-shuffle-draft-v1";
@@ -366,6 +366,26 @@ function howText(id){
   if (e.how === "buy") return '<span class="how">' + (m.kind === "vendor" ? "vendor" : "auction house") + '</span>';
   return '<span class="how" style="color:var(--warn)">needs a price</span>';
 }
+/* what to buy for one reagent line at the planned craft count, following cheaper-to-craft materials down to what you actually buy */
+function buyCell(rg, q){
+  if (!q) return '<span class="na">set Plan to make</span>';
+  var need = (Number(rg.qty) || 0) * q, m = mat(rg.mat), e = eff(rg.mat);
+  var main = '<b class="num">' + Math.ceil(need - 1e-9) + '</b>';
+  if (e.how === "make" && m && m.make) {
+    var parts = [], id = rg.mat, qty = need, seen = {};
+    while (true) {
+      var mm = mat(id), ee = eff(id, seen);
+      if (!mm || ee.how !== "make" || !mm.make) break;
+      seen[id] = 1;
+      var crafts = Math.ceil(qty / (mm.make.yields || 1) - 1e-9);
+      qty = crafts * mm.make.qty; id = mm.make.from;
+      var src = mat(id);
+      parts.push(Math.ceil(qty - 1e-9) + ' ' + esc(src ? src.name : "?"));
+    }
+    return main + '<br><span class="how make">craft from ' + parts.join(', then ') + '</span>';
+  }
+  return main + '<br><span class="how">' + money(e.cost * need) + '</span>';
+}
 function recipeCard(r){
   var o = outcomes(r), st = deStats(r), losing = !!(o.best && !(o[o.best.key] > 0)), bk = o.best && !losing ? o.best.key : null, cutPct = S.settings.ahCut;
   var h = '<article class="rc" id="rc-' + r.id + '"><div class="rc-head"><div>';
@@ -402,12 +422,14 @@ function recipeCard(r){
   h += '<label class="row" style="align-items:center;gap:6px;font-size:13px"><input type="checkbox" id="cd-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="canDE"' + (r.canDE !== false ? " checked" : "") + '> Can be disenchanted</label>';
   h += '</div><div class="field"><label class="lbl" for="nt-' + r.id + '">Notes</label><input id="nt-' + r.id + '" data-k="r" data-rid="' + r.id + '" data-f="notes" value="' + esc(r.notes) + '"></div></div>';
   // reagents
-  h += '<div class="sec"><span class="lbl">Reagents per craft</span><div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Qty</th><th>Cheapest source</th><th class="r">Each</th><th class="r">Line</th><th></th></tr></thead><tbody>';
+  var planQ = Number(r.plan) || 0;
+  h += '<div class="sec"><span class="lbl">Reagents per craft</span><div class="tbl-wrap"><table><thead><tr><th>Material</th><th>Qty</th><th>Cheapest source</th><th class="r">Each</th><th class="r">Line</th><th class="r">' + (planQ ? 'Buy for ' + planQ : 'Buy for plan') + '</th><th></th></tr></thead><tbody>';
   r.reagents.forEach(function(rg, i){
     var e = eff(rg.mat);
     h += '<tr><td><select id="rm-' + r.id + '-' + i + '" data-k="rg" data-rid="' + r.id + '" data-i="' + i + '" data-f="mat">' + matOptions(rg.mat) + '</select></td>';
     h += '<td><input class="qty" type="number" min="0" step="any" id="rq-' + r.id + '-' + i + '" data-k="rg" data-rid="' + r.id + '" data-i="' + i + '" data-f="qty" value="' + rg.qty + '"></td>';
     h += '<td>' + howText(rg.mat) + '</td><td class="r">' + money(e.cost) + '</td><td class="r">' + money(e.cost * rg.qty) + '</td>';
+    h += '<td class="r">' + buyCell(rg, planQ) + '</td>';
     h += '<td><button class="small ghost danger" data-act="del-rg" data-rid="' + r.id + '" data-i="' + i + '" aria-label="Remove reagent">Remove</button></td></tr>';
   });
   h += '</tbody></table></div><div><button class="small" data-act="add-rg" data-rid="' + r.id + '">+ Add reagent</button></div></div>';
